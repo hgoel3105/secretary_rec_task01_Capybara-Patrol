@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}  % For math environments and \text
+\usepackage{geometry} % For page layout
+
+% Set page margins
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+
+\title{\textbf{Editorial — Luxury Square Hotel}}
+\author{Harshil Goel}
+\date{May 2025}
+
+\begin{document}
+
+\maketitle
+
+This problem can be broken down into three major parts:
+
+\begin{enumerate}
+  \item Determine whether there exists a square of side $s$ with all heights $\geq k$.
+  \item Calculate the cost of any given $s \times s$ square efficiently.
+  \item Find the largest possible square that meets the budget constraint $\leq C$.
+\end{enumerate}
+
+\section{Maximal Square Dynamic Programming (Height Constraint)}
+
+We first identify the squares that satisfy the height requirement. We define a dynamic programming matrix $\text{dp}[i][j]$, where $\text{dp}[i][j]$ will store the size of the largest square whose bottom-right corner is at $(i, j)$, and all cells in the square meet the height constraint $\geq k$. We compute this matrix as follows:
+
+\[
+\text{dp}[i][j] = \begin{cases}
+  0 & \text{if } \text{h}[i][j]< k, \\
+  1 + \min(\text{dp}[i-1][j], \text{dp}[i][j-1], \text{dp}[i-1][j-1]) & \text{otherwise.}
+\end{cases}
+\]
+
+Here, each $\text{dp}[i][j]$ gives the largest square ending at cell $(i, j)$ with all heights $\geq k$.
+
+\textbf{Time Complexity:} $\mathcal{O}(n \cdot m)$, where $n$ is the number of rows and $m$ is the number of columns.
+
+\section{Prefix Sums (Cost Constraint)}
+
+To compute the cost of any square efficiently, we use 2D prefix sums. Define $\text{sumH}[i][j]$ as the sum of the subgrid from the top-left corner $(1,1)$ to the cell $(i,j)$:
+
+\[
+\text{sumH}[i][j] = \sum_{1 \leq x \leq i} \sum_{1 \leq y \leq j} h[x][y].
+\]
+
+The cost of a square from $(x_1, y_1)$ to $(x_2, y_2)$ is computed using the following formula:
+
+\[
+\text{cost} = \text{sumH}[x_2][y_2] - \text{sumH}[x_1-1][y_2] - \text{sumH}[x_2][y_1-1] + \text{sumH}[x_1-1][y_1-1].
+\]
+
+\textbf{Time Complexity:} $\mathcal{O}(1)$ per query after an $\mathcal{O}(n \cdot m)$ preprocessing step to compute the prefix sums.
+
+\section{Binary Search for Optimal Square Size}
+
+We perform a binary search over possible square sizes $s \in [1, \min(n, m)]$. For each square size $s$:
+
+\begin{enumerate}
+  \item Traverse all cells $(i, j)$ such that $\text{dp}[i][j] \geq s$.
+  \item Use the prefix sum array to compute the cost of each such $s \times s$ square.
+  \item Check whether at least one of these squares satisfies the budget constraint $\leq C$.
+\end{enumerate}
+
+Once the largest valid square size $s$ is found, we do a final pass to:
+
+\begin{enumerate}
+  \item Count all valid $s \times s$ squares under the budget.
+  \item Record the minimum cost among them.
+\end{enumerate}
+
+\textbf{Total Time Complexity:} $\mathcal{O}(n \cdot m \cdot \log \min(n,m))$, where $n$ and $m$ are the dimensions of the grid.
+
+\end{document}

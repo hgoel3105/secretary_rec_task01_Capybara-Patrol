@@ -1,0 +1,153 @@
+\documentclass{article}
+\usepackage{amsmath} 
+\usepackage{amsfonts} 
+\usepackage{graphicx} 
+\usepackage{geometry} 
+\geometry{top=1in, bottom=1in, left=1in, right=1in} 
+
+\title{\textbf{Luxury Square Hotel Problem}}
+\author{Harshil Goel}
+\date{May 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem Statement}
+
+You are the manager of a renowned construction company. You have to secure permits for a new square-shaped luxury hotel of height exactly $k$. The kingdom is divided into $t$ independent cities. In each city, the land is an $n \times m$ grid of individual plots. On plot $(i, j)$, the local authority issues a building permit up to height $h(i,j)$; acquiring that permit costs exactly $h(i,j)$ coins.
+
+Your hotel requires every plot in its square footprint to allow at least height $k$. Moreover, your total budget for permits in each city is $C$ coins.
+
+Your task for each city is to choose a square block of plots of maximum possible side length $s$ such that:
+
+\begin{itemize}
+    \item \textbf{Height constraint:} every permit in the square has $h(i,j) \geq k$.
+    \item \textbf{Budget constraint:} the sum of permits’ costs in the square (i.e. $\sum h(i,j)$) is $\leq C$.
+\end{itemize}
+
+Among all such maximum-size squares, you also want to know how many there are, and the minimum total cost among them.
+
+\section*{Input}
+
+The first line contains a single integer $t$ ($1 \leq t \leq 10$), the number of cities (test cases).
+
+Each test case begins with a line containing four integers:
+
+\[
+n \, m \, k \, C
+\]
+
+where:
+\begin{itemize}
+    \item $n$ is the number of rows $(1 \leq n \leq 1000)$.
+    \item $m$ is the number of columns $(1 \leq m \leq 1000)$.
+    \item $k$ is the required hotel height $(1 \leq k \leq 10^6)$.
+    \item $C$ is your budget $(1 \leq C \leq 10^{15})$.
+\end{itemize}
+
+Then follow $n$ lines, each containing $m$ integers representing the heights (permit costs) of the plots:
+
+\[
+h(i,1) \, h(i,2) \, \dots \, h(i,m) \quad \text{for } 1 \leq i \leq n
+\]
+
+where $h(i,j)$ represents the height (and cost) of the permit on plot $(i,j)$ $(1 \leq h(i,j) \leq 10^6)$.
+
+\section*{Output}
+
+For each test case, output a single line with three integers:
+
+$$ s \quad \text{count} \quad \text{min\_cost} $$
+
+where:
+\begin{itemize}
+    \item $s$ is the maximum side length of the square.
+    \item \text{count} is the number of squares of that size.
+    \item \text{min\_cost} is the minimum cost among those squares.
+\end{itemize}
+
+If no square can be built, output:
+
+\[
+0 \quad 0 \quad 0
+\]
+
+\section*{Constraints}
+The sum of $n \times m$ over all test cases does not exceed $10^6$.
+
+\section*{Example}
+
+\noindent \textbf{Input:}
+
+\begin{verbatim}
+2
+4 5 3 50
+2 3 4 3 2
+4 5 3 3 3
+3 3 3 4 1
+5 5 5 5 5
+3 3 10 20
+5 5 5
+5 2 5
+5 5 5
+\end{verbatim}
+
+\noindent \textbf{Output:}
+
+\begin{verbatim}
+3 3 31
+0 0 0
+\end{verbatim}
+
+\noindent\large\textbf{Explanation of Example}
+
+\noindent \textbf{Test Case 1:}
+
+Grid size: $4 \times 5$, Required height $k=3$, Budget $C=50$
+
+\[
+\begin{matrix}
+2 & 3 & 4 & 3 & 2 \\
+4 & 5 & 3 & 3 & 3 \\
+3 & 3 & 3 & 4 & 1 \\
+5 & 5 & 5 & 5 & 5 \\
+\end{matrix}
+\]
+
+We want the largest square where: 
+\begin{itemize}
+    \item Every plot has height $\geq 3$.
+    \item The total cost (sum of heights in the square) is $\leq 50$.
+\end{itemize}
+
+The largest possible square size that meets the height requirement is $3 \times 3$. There are 3 such squares of size $3 \times 3$ where all heights are at least 3 and the cost is within budget:
+\begin{itemize}
+    \item Top-left at $(1,2)$
+    \item Top-left at $(2,1)$
+    \item Top-left at $(2,2)$
+\end{itemize}
+
+Among them, the cheapest has a total permit cost of 31. Hence, output: 
+\[
+3 \, 3 \, 31
+\]
+
+\noindent \textbf{Test Case 2:}
+
+Grid size: $3 \times 3$, Required height $k=10$, Budget $C=20$
+
+\[
+\begin{matrix}
+5 & 5 & 5 \\
+5 & 2 & 5 \\
+5 & 5 & 5 \\
+\end{matrix}
+\]
+
+No plot in the entire grid has height $\geq 10$. So, it’s impossible to place even a $1 \times 1$ square. Hence, output:
+\[
+0 \, 0 \, 0
+\]
+
+\end{document}
